@@ -3,9 +3,9 @@
     "description": "Rospdf PHP integration for Laravel",
     "type": "library",
     "require": {
-        "illuminate/support": "^5.4",
+        "illuminate/support": "^5.2",
         "rospdf/pdf-php": "^0.12.31",
-        "illuminate/database": "^5.4",
+        "illuminate/database": "^5.2",
         "symfony/http-foundation": "^3.2"
     },
     "require-dev": {
