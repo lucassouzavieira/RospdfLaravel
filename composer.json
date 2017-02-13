@@ -1,0 +1,30 @@
+{
+    "name": "lvieira/rospdf-laravel",
+    "description": "Rospdf PHP integration for Laravel",
+    "type": "library",
+    "require": {
+        "illuminate/support": "^5.4",
+        "rospdf/pdf-php": "^0.12.31"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lucas S. Vieira",
+            "email": "lucassouzavieiraengcomp@gmail.com"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "vendor/Illuminate/Foundation/helpers.php",
+            "vendor/Illuminate/Support/helpers.php"
+        ],
+        "psr-4": {
+            "Illuminate\\": "vendor/Illuminate/",
+            "Vieira\\Rospdf\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
