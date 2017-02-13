@@ -1,6 +1,9 @@
 <?php
 
 return [
+    /*
+     * Margins in cm
+     */
     'margins' => [
         'left'   => 2,
         'right'  => 2,
