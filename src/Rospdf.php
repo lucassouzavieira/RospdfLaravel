@@ -28,24 +28,53 @@ class Rospdf
      * Add an default header to document pages
      * @param \Cezpdf $document
      * @param bool $pageNumbers
-     * @param array|null $options
      * @return void
      */
-    public function addHeader(\Cezpdf &$document, $pageNumbers = true, array $options = null)
+    public function addHeader(\Cezpdf &$document, $page = 'all', $pageNumbers = false)
     {
+        $offsets = Helper::headerOffsets();
 
+        $text = config('rospdf.header.main');
+
+        $header = $document->openObject();
+
+        $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $offsets['y2'], $text);
+
+        if($pageNumbers){
+            $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $document->ezGetCurrentPageNumber(), 0, 'right');
+        }
+
+        $document->line($offsets['x1'], $offsets['y1'], $offsets['x2'], $offsets['y2']);
+        $document->closeObject();
+
+        $document->addObject($header, $page);
     }
 
     /**
      * Add an default footer to document pages
      * @param \Cezpdf $document
      * @param bool $pageNumbers
-     * @param array|null $options
      * @return void
      */
-    public function addFooter(\Cezpdf &$document, $pageNumbers = true, array $options = null)
+    public function addFooter(\Cezpdf &$document, $page = 'all', $pageNumbers = false)
     {
+        $offsets = Helper::footerOffsets();
 
+        $text = config('rospdf.header.main');
+
+        $header = $document->openObject();
+
+        $document->line($offsets['x1'], $offsets['y1'], $offsets['x2'], $offsets['y2']);
+
+        $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $text);
+
+        if($pageNumbers){
+            $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $document->ezGetCurrentPageNumber(), 0, 'right');
+        }
+
+        $document->closeObject();
+
+        $document->addObject($header, $page);
     }
 
     /**
@@ -89,10 +118,32 @@ class Rospdf
     /**
      * Saves the file to specified path
      * @param \Cezpdf $document
-     * @param string $path
+     * @param string $fileName
+     * @param null $path
+     * @return bool
+     * @throws \Exception
      */
-    public function saveTo(\Cezpdf &$document, $path = null)
+    public function saveTo(\Cezpdf &$document, $fileName = 'document', $path = null)
     {
+        $defaultPath = storage_path() . DIRECTORY_SEPARATOR;
 
+        if(!$path){
+            $path = $defaultPath;
+        }
+
+        try {
+            $file = fopen($path . $fileName.'pdf', 'wb+');
+            $output = $document->ezOutput();
+            fwrite($file, $output);
+            fclose($file);
+        } catch (\Exception $e){
+            if (config('app.debug')) {
+                throw $e;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }
