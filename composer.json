@@ -27,6 +27,5 @@
             "Illuminate\\": "vendor/Illuminate/",
             "Vieira\\Rospdf\\": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
