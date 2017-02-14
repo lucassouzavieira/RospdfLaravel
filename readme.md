@@ -2,7 +2,7 @@
 
 Rospdf PHP integration for Laravel
 
-## Instalation  
+## Installation  
 
 Install from composer :  
 `composer require lvieira/rospdf-laravel`  
