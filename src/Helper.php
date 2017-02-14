@@ -36,10 +36,10 @@ abstract class Helper
         $margins = config('rospdf.margins');
 
         return [
-            'x1' => $size['x1'] + (int) $margins['left'] * self::PIXEL,
-            'y1' => $size['y2'] - (int) $margins['top'] * self::PIXEL,
-            'x2' => $size['x2'] - (int) $margins['right'] * self::PIXEL,
-            'y2' => $size['y2'] - (int) $margins['top'] * self::PIXEL,
+            'x1' => $size['x1'] + $margins['left'] * self::PIXEL,
+            'y1' => $size['y2'] - $margins['top'] * self::PIXEL,
+            'x2' => $size['x2'] - $margins['right'] * self::PIXEL,
+            'y2' => $size['y2'] - $margins['top'] * self::PIXEL,
         ];
     }
 
@@ -59,10 +59,30 @@ abstract class Helper
         $margins = config('rospdf.margins');
 
         return [
-            'x1' => $size['x1'] + (int) $margins['left'] * self::PIXEL,
-            'y1' => $size['y1'] + (int) $margins['bottom'] * self::PIXEL,
-            'x2' => $size['x2'] - (int) $margins['right'] * self::PIXEL,
-            'y2' => $size['y1'] + (int) $margins['bottom'] * self::PIXEL,
+            'x1' => $size['x1'] + $margins['left'] * self::PIXEL,
+            'y1' => $size['y1'] + $margins['bottom'] * self::PIXEL,
+            'x2' => $size['x2'] - $margins['right'] * self::PIXEL,
+            'y2' => $size['y1'] + $margins['bottom'] * self::PIXEL,
         ];
+    }
+
+    /**
+     * Table height start position.
+     *
+     * @param int $spacing
+     *
+     * @return float
+     */
+    public static function getTableHeightPosition($spacing = 0)
+    {
+        $size = self::A4_PORTRAIT_SIZE;
+
+        if (config('rospdf.orientation') == 'landscape') {
+            $size = self::A4_LANDSCAPE_SIZE;
+        }
+
+        $margins = config('rospdf.margins');
+
+        return $size['y2'] - $margins['top'] * self::PIXEL + $spacing;
     }
 }

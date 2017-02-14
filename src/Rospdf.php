@@ -2,6 +2,7 @@
 
 namespace Vieira\Rospdf;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Response as ResponseFactory;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,6 +14,13 @@ class Rospdf
      * @var int
      */
     private $spacing = 5;
+
+    /**
+     * default spacing used for show table elements.
+     *
+     * @var int
+     */
+    private $tableSpacing = 25;
 
     /**
      * Creates and configure an new ezPDF document.
@@ -48,6 +56,7 @@ class Rospdf
         $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] + $this->spacing, config('rospdf.fontsize'), $text);
 
         if ($pageNumbers) {
+            // TODO review page numbers at header
             $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $document->ezGetCurrentPageNumber(), 0, 'right');
         }
 
@@ -77,12 +86,42 @@ class Rospdf
         $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] - 2 * $this->spacing, config('rospdf.fontsize'), $text, 0, $align);
 
         if ($pageNumbers) {
-            $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] - 4 * $this->spacing, config('rospdf.fontsize'), $document->ezGetCurrentPageNumber(), 0, $align);
+            $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] - 4 * $this->spacing, config('rospdf.fontsize'), $document->ezWhatPageNumber(), 0, $align);
         }
 
         $document->closeObject();
 
         $document->addObject($footer, $page);
+    }
+
+    /**
+     * Create an table in document from an given Collection.
+     *
+     * @param \Cezpdf    $document
+     * @param Collection $collection
+     * @param array      $columns
+     * @param string     $title      Table title
+     * @param array      $options    Options array
+     */
+    public function addTableFromCollection(\Cezpdf &$document, Collection $collection, array $columns, $title = '', array $options = null)
+    {
+        $data = $collection->toArray();
+
+        if (is_null($options)) {
+            $options = [
+                'showHeadings' => 1,
+                'shaded' => 1,
+                'shadeCol' => array(0.7, 0.7, 0.7),
+                'fontSize' => 11,
+                'titleFontSize' => 12,
+                'xPos' => 'center',
+                'xOrientation' => 'center',
+                'nextPageY' => true,
+            ];
+        }
+
+        $document->ezSetY(Helper::getTableHeightPosition($this->tableSpacing));
+        $document->ezTable($data, $columns, $title, $options);
     }
 
     /**
@@ -137,8 +176,8 @@ class Rospdf
             fclose($file);
 
             $headers = ['Content-type: application/pdf'];
-            $response = ResponseFactory::download($path.$fileName.'.pdf', $fileName.'pdf', $headers);
-            unlink($path.$fileName.'pdf');
+            $response = ResponseFactory::download($path.$fileName.'.pdf', $fileName.'.pdf', $headers);
+            unlink($path.$fileName.'.pdf');
 
             return $response;
         } catch (\Exception $e) {
