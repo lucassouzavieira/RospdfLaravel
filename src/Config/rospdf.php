@@ -5,20 +5,22 @@ return [
      * Margins in cm
      */
     'margins' => [
-        'left'   => 2,
-        'right'  => 2,
-        'top'    => 2,
+        'left' => 2,
+        'right' => 2,
+        'top' => 2,
         'bottom' => 2,
     ],
 
     'header' => [
-        'main' => 'Header Text'
+        'main' => 'Header Text',
+        'pagenumbers' => true,
+        'align' => 'left',
     ],
 
     'footer' => [
         'main' => 'Footer Text',
         'pagenumbers' => true,
-        'align' => 'right'
+        'align' => 'left',
     ],
 
     'fontsize' => 12,
@@ -27,5 +29,5 @@ return [
 
     'paper' => 'a4',
 
-    'orientation' => 'portrait'
+    'orientation' => 'portrait',
 ];

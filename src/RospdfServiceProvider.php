@@ -13,7 +13,6 @@ class RospdfServiceProvider extends ServiceProvider
         ]);
     }
 
-
     public function register()
     {
         $this->app['Rospdf'] = $this->app->share(function ($app) {

@@ -29,4 +29,8 @@ and the Facade:
        ]
 ```
 
-Now the package is ready for use !
+Run this command in your terminal...  
+
+`php artisan vendor:publish`  
+
+And now the package is ready for use !
