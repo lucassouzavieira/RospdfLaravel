@@ -109,9 +109,34 @@ class Rospdf
      * Generates an file and returns a file download response
      * @param \Cezpdf $document
      * @param string $fileName
+     * @return bool
+     * @throws \Exception
      */
     public function downloadResponse(\Cezpdf &$document, $fileName = 'file')
     {
+        $path = storage_path() . DIRECTORY_SEPARATOR;
+
+        try {
+
+            $file = fopen($path . $fileName.'pdf', 'wb+');
+            $output = $document->ezOutput();
+            fwrite($file, $output);
+            fclose($file);
+
+            $headers = ['Content-type: application/pdf'];
+            $response = ResponseFactory::download($path . $fileName.'pdf', $fileName . 'pdf', $headers);
+            unlink($path . $fileName.'pdf');
+
+            return $response;
+
+        } catch (\Exception $e){
+
+            if (config('app.debug')) {
+                throw $e;
+            }
+
+            return false;
+        }
 
     }
 

@@ -19,10 +19,6 @@
         }
     ],
     "autoload": {
-        "files": [
-            "vendor/Illuminate/Foundation/helpers.php",
-            "vendor/Illuminate/Support/helpers.php"
-        ],
         "psr-4": {
             "Illuminate\\": "vendor/Illuminate/",
             "Vieira\\Rospdf\\": "src/"
