@@ -25,7 +25,7 @@ and the Facade:
 ```php
        'alias' => [
             ...            
-            'Rospdf' => Harpia\Rospdf\Facades\Rospdf::class
+            'Rospdf' => Vieira\Rospdf\Facades\Rospdf::class
        ]
 ```
 
