@@ -23,6 +23,25 @@ class Rospdf
     private $tableSpacing = 25;
 
     /**
+     * Default value to x position to show page number
+     * @var float|int
+     */
+    private $xPageNumber;
+
+    /**
+     * Default value to y position to show page number
+     * @var float|int
+     */
+    private $yPageNumber = 50;
+
+    public function __construct()
+    {
+        $size = Helper::getSize();
+
+        $this->xPageNumber = $size['x2'] / 2;
+    }
+
+    /**
      * Creates and configure an new ezPDF document.
      *
      * @return \Cezpdf
@@ -35,6 +54,8 @@ class Rospdf
 
         $document->ezSetCmMargins($margins['top'], $margins['bottom'], $margins['left'], $margins['right']);
         $document->selectFont(config('rospdf.fontfamily'));
+
+        $document->ezStartPageNumbers($this->xPageNumber, $this->yPageNumber, config('rospdf.fontsize'), 'PAGENUM', 1);
 
         return $document;
     }
@@ -86,7 +107,7 @@ class Rospdf
         $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] - 2 * $this->spacing, config('rospdf.fontsize'), $text, 0, $align);
 
         if ($pageNumbers) {
-            $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] - 4 * $this->spacing, config('rospdf.fontsize'), $document->ezWhatPageNumber(), 0, $align);
+            $document->addText($offsets['x1'] + $this->spacing, $offsets['y1'] - 4 * $this->spacing, config('rospdf.fontsize'), '{PAGENUM}', 0, $align);
         }
 
         $document->closeObject();
@@ -112,7 +133,7 @@ class Rospdf
                 'showHeadings' => 1,
                 'shaded' => 1,
                 'shadeCol' => array(0.7, 0.7, 0.7),
-                'fontSize' => 11,
+                'fontSize' => 10,
                 'titleFontSize' => 12,
                 'xPos' => 'center',
                 'xOrientation' => 'center',

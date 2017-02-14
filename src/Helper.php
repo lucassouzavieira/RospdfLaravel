@@ -20,6 +20,18 @@ abstract class Helper
         'y2' => 595.28,
     ];
 
+    public static function getSize()
+    {
+        $size = self::A4_PORTRAIT_SIZE;
+
+        if (config('rospdf.orientation') == 'landscape') {
+            $size = self::A4_LANDSCAPE_SIZE;
+        }
+
+        return $size;
+    }
+
+
     /**
      * Calculates the header offsets.
      *
@@ -27,11 +39,7 @@ abstract class Helper
      */
     public static function headerOffsets()
     {
-        $size = self::A4_PORTRAIT_SIZE;
-
-        if (config('rospdf.orientation') == 'landscape') {
-            $size = self::A4_LANDSCAPE_SIZE;
-        }
+        $size = self::getSize();
 
         $margins = config('rospdf.margins');
 
@@ -50,11 +58,7 @@ abstract class Helper
      */
     public static function footerOffsets()
     {
-        $size = self::A4_PORTRAIT_SIZE;
-
-        if (config('rospdf.orientation') == 'landscape') {
-            $size = self::A4_LANDSCAPE_SIZE;
-        }
+        $size = self::getSize();
 
         $margins = config('rospdf.margins');
 
@@ -75,14 +79,11 @@ abstract class Helper
      */
     public static function getTableHeightPosition($spacing = 0)
     {
-        $size = self::A4_PORTRAIT_SIZE;
-
-        if (config('rospdf.orientation') == 'landscape') {
-            $size = self::A4_LANDSCAPE_SIZE;
-        }
+        $size = self::getSize();
 
         $margins = config('rospdf.margins');
 
         return $size['y2'] - $margins['top'] * self::PIXEL + $spacing;
     }
+
 }
