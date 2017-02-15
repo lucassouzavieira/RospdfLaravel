@@ -78,7 +78,7 @@ class Rospdf
 
         if ($pageNumbers) {
             // TODO review page numbers at header
-            $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $document->ezGetCurrentPageNumber(), 0, 'right');
+            $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), '{PAGENUM}', 0, 'right');
         }
 
         $document->line($offsets['x1'], $offsets['y1'], $offsets['x2'], $offsets['y2']);
