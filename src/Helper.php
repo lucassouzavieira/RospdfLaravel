@@ -31,7 +31,6 @@ abstract class Helper
         return $size;
     }
 
-
     /**
      * Calculates the header offsets.
      *
@@ -85,5 +84,4 @@ abstract class Helper
 
         return $size['y2'] - $margins['top'] * self::PIXEL + $spacing;
     }
-
 }

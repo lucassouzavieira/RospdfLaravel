@@ -23,13 +23,15 @@ class Rospdf
     private $tableSpacing = 25;
 
     /**
-     * Default value to x position to show page number
+     * Default value to x position to show page number.
+     *
      * @var float|int
      */
     private $xPageNumber;
 
     /**
-     * Default value to y position to show page number
+     * Default value to y position to show page number.
+     *
      * @var float|int
      */
     private $yPageNumber = 50;
@@ -37,26 +39,29 @@ class Rospdf
     public function __construct()
     {
         $size = Helper::getSize();
-
         $this->xPageNumber = $size['x2'] / 2;
     }
 
     /**
      * Creates and configure an new ezPDF document.
      *
+     * @param array $options
+     *
      * @return \Cezpdf
      */
-    public function newDocument(array $options = null)
+    public function newDocument(array $options = [])
     {
-        // TODO make possible override default configurations
-        
-        $document = new \Cezpdf(config('rospdf.paper'), config('rospdf.orientation'));
-        $margins = config('rospdf.margins');
+        $paper = array_key_exists('paper', $options) ? $options['paper'] : config('rospdf.paper');
+        $orientation = array_key_exists('orientation', $options) ? $options['orientation'] : config('rospdf.orientation');
+        $margins = array_key_exists('margins', $options) ? $options['margins'] : config('rospdf.margins');
+        $fontFamily = array_key_exists('fontfamily', $options) ? $options['fontfamily'] : config('rospdf.fontfamily');
+        $fontSize = array_key_exists('fontsize', $options) ? $options['fontsize'] : config('rospdf.fontsize');
+
+        $document = new \Cezpdf($paper, $orientation);
 
         $document->ezSetCmMargins($margins['top'], $margins['bottom'], $margins['left'], $margins['right']);
-        $document->selectFont(config('rospdf.fontfamily'));
-
-        $document->ezStartPageNumbers($this->xPageNumber, $this->yPageNumber, config('rospdf.fontsize'), 'PAGENUM', 1);
+        $document->selectFont($fontFamily);
+        $document->ezStartPageNumbers($this->xPageNumber, $this->yPageNumber, $fontSize, 'PAGENUM', 1);
 
         return $document;
     }
