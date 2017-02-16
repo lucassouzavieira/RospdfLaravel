@@ -46,10 +46,11 @@ class Rospdf
      *
      * @return \Cezpdf
      */
-    public function newDocument()
+    public function newDocument(array $options = null)
     {
+        // TODO make possible override default configurations
+        
         $document = new \Cezpdf(config('rospdf.paper'), config('rospdf.orientation'));
-
         $margins = config('rospdf.margins');
 
         $document->ezSetCmMargins($margins['top'], $margins['bottom'], $margins['left'], $margins['right']);
