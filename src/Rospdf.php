@@ -49,7 +49,7 @@ class Rospdf
     public function newDocument(array $options = null)
     {
         // TODO make possible override default configurations
-        
+
         $document = new \Cezpdf(config('rospdf.paper'), config('rospdf.orientation'));
         $margins = config('rospdf.margins');
 

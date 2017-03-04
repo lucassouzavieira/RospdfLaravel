@@ -20,7 +20,9 @@ abstract class Helper
         'y2' => 595.28,
     ];
 
-    public static function getSize()
+
+    // TODO Use document format to calculate offsets
+    public static function getSize(\Cezpdf $document)
     {
         $size = self::A4_PORTRAIT_SIZE;
 
@@ -34,10 +36,10 @@ abstract class Helper
 
     /**
      * Calculates the header offsets.
-     *
+     * // TODO Use document format to calculate offsets
      * @return array
      */
-    public static function headerOffsets()
+    public static function headerOffsets(\Cezpdf $document)
     {
         $size = self::getSize();
 
@@ -85,5 +87,4 @@ abstract class Helper
 
         return $size['y2'] - $margins['top'] * self::PIXEL + $spacing;
     }
-
 }
