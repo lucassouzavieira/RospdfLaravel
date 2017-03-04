@@ -33,7 +33,6 @@ abstract class Helper
         return $size;
     }
 
-
     /**
      * Calculates the header offsets.
      * // TODO Use document format to calculate offsets

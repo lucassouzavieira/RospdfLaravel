@@ -46,11 +46,10 @@ class Rospdf
      *
      * @return \Cezpdf
      */
-    public function newDocument(array $options = null)
+    public function newDocument()
     {
-        // TODO make possible override default configurations
-
         $document = new \Cezpdf(config('rospdf.paper'), config('rospdf.orientation'));
+
         $margins = config('rospdf.margins');
 
         $document->ezSetCmMargins($margins['top'], $margins['bottom'], $margins['left'], $margins['right']);
@@ -79,7 +78,7 @@ class Rospdf
 
         if ($pageNumbers) {
             // TODO review page numbers at header
-            $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), '{PAGENUM}', 0, 'right');
+            $document->addText($offsets['x1'], $offsets['y1'], config('rospdf.fontsize'), $document->ezGetCurrentPageNumber(), 0, 'right');
         }
 
         $document->line($offsets['x1'], $offsets['y1'], $offsets['x2'], $offsets['y2']);
